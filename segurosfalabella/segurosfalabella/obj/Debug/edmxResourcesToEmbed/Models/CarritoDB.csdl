@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SegurosFallabellaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Categoria">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Producto" Relationship="Self.FK__Producto__Catego__1273C1CD" FromRole="Categoria" ToRole="Producto" />
+  </EntityType>
+  <EntityType Name="ListaVenta">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="VentaId" Type="Int32" />
+    <Property Name="ProductoId" Type="Int32" />
+    <Property Name="Cantidad" Type="Int32" />
+    <Property Name="Total" Type="Double" />
+    <NavigationProperty Name="Producto" Relationship="Self.FK__ListaVent__Produ__182C9B23" FromRole="ListaVenta" ToRole="Producto" />
+    <NavigationProperty Name="Venta" Relationship="Self.FK__ListaVent__Venta__173876EA" FromRole="ListaVenta" ToRole="Venta" />
+  </EntityType>
+  <EntityType Name="Producto">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Precio" Type="Double" />
+    <Property Name="FechaCreacion" Type="DateTime" Precision="3" />
+    <Property Name="Foto" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="CategoriaId" Type="Int32" />
+    <NavigationProperty Name="Categoria" Relationship="Self.FK__Producto__Catego__1273C1CD" FromRole="Producto" ToRole="Categoria" />
+    <NavigationProperty Name="ListaVenta" Relationship="Self.FK__ListaVent__Produ__182C9B23" FromRole="Producto" ToRole="ListaVenta" />
+  </EntityType>
+  <EntityType Name="Venta">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="DiaVenta" Type="DateTime" Precision="3" />
+    <Property Name="Subtotal" Type="Double" />
+    <Property Name="Iva" Type="Double" />
+    <Property Name="Total" Type="Double" />
+    <NavigationProperty Name="ListaVenta" Relationship="Self.FK__ListaVent__Venta__173876EA" FromRole="Venta" ToRole="ListaVenta" />
+  </EntityType>
+  <Association Name="FK__Producto__Catego__1273C1CD">
+    <End Role="Categoria" Type="Self.Categoria" Multiplicity="0..1" />
+    <End Role="Producto" Type="Self.Producto" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Categoria">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Producto">
+        <PropertyRef Name="CategoriaId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__ListaVent__Produ__182C9B23">
+    <End Role="Producto" Type="Self.Producto" Multiplicity="0..1" />
+    <End Role="ListaVenta" Type="Self.ListaVenta" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Producto">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ListaVenta">
+        <PropertyRef Name="ProductoId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__ListaVent__Venta__173876EA">
+    <End Role="Venta" Type="Self.Venta" Multiplicity="0..1" />
+    <End Role="ListaVenta" Type="Self.ListaVenta" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Venta">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ListaVenta">
+        <PropertyRef Name="VentaId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="SegurosFallabellaEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Categoria" EntityType="Self.Categoria" />
+    <EntitySet Name="ListaVenta" EntityType="Self.ListaVenta" />
+    <EntitySet Name="Producto" EntityType="Self.Producto" />
+    <EntitySet Name="Venta" EntityType="Self.Venta" />
+    <AssociationSet Name="FK__Producto__Catego__1273C1CD" Association="Self.FK__Producto__Catego__1273C1CD">
+      <End Role="Categoria" EntitySet="Categoria" />
+      <End Role="Producto" EntitySet="Producto" />
+    </AssociationSet>
+    <AssociationSet Name="FK__ListaVent__Produ__182C9B23" Association="Self.FK__ListaVent__Produ__182C9B23">
+      <End Role="Producto" EntitySet="Producto" />
+      <End Role="ListaVenta" EntitySet="ListaVenta" />
+    </AssociationSet>
+    <AssociationSet Name="FK__ListaVent__Venta__173876EA" Association="Self.FK__ListaVent__Venta__173876EA">
+      <End Role="Venta" EntitySet="Venta" />
+      <End Role="ListaVenta" EntitySet="ListaVenta" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
